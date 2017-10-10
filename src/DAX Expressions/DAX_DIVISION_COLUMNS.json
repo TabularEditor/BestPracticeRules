@@ -1,0 +1,10 @@
+{
+  "ID": "DAX_DIVISION_COLUMNS",
+  "Name": "Avoid division (use DIVIDE function instead)",
+  "Category": "DAX Expressions",
+  "Description": "Calculated Columns, Measures or Calculated Tables should not use the division symbol in their expressions (/). Instead, it is advised to always use the DIVIDE(<numerator>,<denominator>) function.",
+  "Severity": 3,
+  "Scope": "Measure, CalculatedColumn, CalculatedTable",
+  "Expression": "Expression.Contains(\"/\")",
+  "Remarks": "This rule may flag false positives, if a slash (/) is used in an object name or in a comment. To fix this, we need access to the tokens from lexing the expression."
+}
