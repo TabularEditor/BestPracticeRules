@@ -1,0 +1,9 @@
+{
+  "ID": "PERF_UNUSED_COLUMNS",
+  "Name": "Remove unused columns",
+  "Category": "Performance",
+  "Description": "Hidden columns, which do not have any dependencies, are not used in any relationships, not used in any hierarchies and not used as the SortByColumn for other columns, will likely not be used by clients and thus take up unnecessary space. Consider removing the columns from the model to save space and improve processing time, if you are certain that no external DAX or MDX queries make use of the columns.",
+  "Severity": 2,
+  "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
+  "Expression": "IsHidden = true and\nDependants.Count = 0 and\nnot UsedInRelationships.Any() and\nnot UsedInHierarchies.Any() and\nnot UsedInSortBy.Any()",
+}
