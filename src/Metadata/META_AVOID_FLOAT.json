@@ -1,0 +1,10 @@
+{
+  "ID": "META_AVOID_FLOAT",
+  "Name": "Do not use floating point data types",
+  "Category": "Metadata",
+  "Description": "Floating point datatypes can cause unexpected results when evaluating values close to 0. Use Decimal instead.",
+  "Severity": 3,
+  "Scope": "Measure, DataColumn, CalculatedColumn, CalculatedTableColumn",
+  "Expression": "DataType = \"Double\"",
+  "FixExpression": "DataType = DataType.Decimal"
+}
