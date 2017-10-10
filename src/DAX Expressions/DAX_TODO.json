@@ -1,0 +1,9 @@
+{
+  "ID": "DAX_TODO",
+  "Name": "Revisit TODO expressions",
+  "Category": "DAX Expressions",
+  "Description": "Objects with an expression containing the word \"TODO\" (typically as a comment), should most likely be revisited.",
+  "Severity": 1,
+  "Scope": "Measure, Partition, CalculatedColumn, CalculatedTable",
+  "Expression": "Expression.IndexOf(\"TODO\", StringComparison.OrdinalIgnoreCase) >= 0"
+}
