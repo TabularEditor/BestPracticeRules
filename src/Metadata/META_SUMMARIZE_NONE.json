@@ -1,0 +1,10 @@
+{
+  "ID": "META_SUMMARIZE_NONE",
+  "Name": "Don't summarize numeric columns",
+  "Category": "Metadata",
+  "Description": "Set the SummarizeBy property of all visible numeric columns to \"None\", to avoid unintentional summarization in client tools. Create measures for columns that are supposed to be summarized.",
+  "Severity": 1,
+  "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
+  "Expression": "IsHidden = false and SummarizeBy <> \"None\"",
+  "FixExpression": "SummarizeBy = AggregateFunction.None"
+}
