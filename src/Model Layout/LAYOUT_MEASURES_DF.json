@@ -1,0 +1,9 @@
+{
+  "ID": "LAYOUT_MEASURES_DF",
+  "Name": "Organize measures in display folders",
+  "Category": "Model Layout",
+  "Description": "Tables with more than 10 visible measures should have them organized in display folders for improved usability",
+  "Severity": 1,
+  "Scope": "Table",
+  "Expression": "not IsHidden and Measures.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) > 10",
+}
