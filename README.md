@@ -56,6 +56,8 @@ Use one of the following values for the **Category** of the rule:
  Rules that govern visibility, perspectives and localization of objects in the model. For example, whether objects should be visible or not given certain conditions.
 - **Performance** (Prefix: PERF)  
  Rules that are transparent to model users, but may impact processing or querying performance of the model.
+- **Naming** (Prefix: NAME)
+ Rules that enforce specific naming conventions.
 
 More categories may be added over time.
 
