@@ -25,7 +25,10 @@ Set-Content ($env:Build_SourcesDirectory + "\BPARules-contrib.json") $jsonContri
 Write-Host "Finished combining" $standardRules.Length "standard rule(s)"
 Write-Host "Finished combining" $contribRules.Length "contrib rule(s)"
 
-##[command]git commit -m "Combined rules"
+cd $env:Build_SourcesDirectory
+Write-Host "##[command]git add ."
+git add .
+Write-Host "##[command]git commit -m ""Combined rules"""
 git commit -m "Combined rules"
-##[command]git push origin master
+Write-Host "##[command]git push origin master"
 git push origin master
