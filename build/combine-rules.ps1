@@ -20,11 +20,11 @@ $jsonContrib = ConvertTo-Json $contribRules
 if($jsonStandard -eq "") { $jsonStandard = "[]" }
 if($jsonContrib -eq "") { $jsonContrib = "[]" }
 
-Set-Content ($env:build_stagingDirectory + "\BPARules-standard.json") $jsonStandard
-Set-Content ($env:build_stagingDirectory + "\BPARules-contrib.json") $jsonContrib
+Set-Content ($env:Build_SourcesDirectory + "\BPARules-standard.json") $jsonStandard
+Set-Content ($env:Build_SourcesDirectory + "\BPARules-contrib.json") $jsonContrib
 Write-Host "Finished combining" $standardRules.Length "standard rule(s)"
 Write-Host "Finished combining" $contribRules.Length "contrib rule(s)"
 
-if ($env:system_debug) {
-    dir $env:build_stagingDirectory
-}
+git add .
+git commit -m "Combined rules"
+git push origin master
