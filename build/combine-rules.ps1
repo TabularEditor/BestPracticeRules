@@ -17,8 +17,8 @@ Get-ChildItem -Recurse -Filter *.json |
 
 $jsonStandard = ConvertTo-Json $standardRules
 $jsonContrib = ConvertTo-Json $contribRules
-if($jsonStandard = "") { $jsonStandard = "[]" }
-if($jsonContrib = "") { $jsonContrib = "[]" }
+if($jsonStandard -eq "") { $jsonStandard = "[]" }
+if($jsonContrib -eq "") { $jsonContrib = "[]" }
 
 Set-Content ($env:build_stagingDirectory + "\BPARules-standard.json") $jsonStandard
 Set-Content ($env:build_stagingDirectory + "\BPARules-contrib.json") $jsonContrib
