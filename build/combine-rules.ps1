@@ -31,4 +31,4 @@ git add .
 Write-Host "##[command]git commit -m ""Combined rules"""
 git commit -m "Combined rules"
 Write-Host "##[command]git push origin HEAD:master"
-git push origin HEAD:master
+git push origin HEAD:master *>> $env:Build_SourcesDirectory\GitPush_Output.txt
