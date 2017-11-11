@@ -38,11 +38,11 @@ Rules should be submitted in their JSON representation:
 
 Rule **ID** must be META_ALL_UPPERCASE_WITH_UNDERSCORES, and include the category prefix (see below). Rule **Name** should be proper case and kept as short as possible, while still describing the essential function of the rule. Rule **Description** should contain a detailed developer-oriented description of the rule and suggestions on how to fix objects that are catched by the rule. Rule **Severity** should be an integer between 1 and 5:
 
-1: Not important / cosmetic only
-2: Minor importance / may cause end-user confusion or a less-than-optimal user experience
-3: Important / may cause functional issues, performance degradation or end-user confusion
-4: Very important / similar to 3, but with a higher risk of causing issues
-5: Critical / similar to 4, but guaranteed to cause issues such as deployment/processing errors or logical errors
+1. Not important / cosmetic only
+2. Minor importance / may cause end-user confusion or a less-than-optimal user experience
+3. Important / may cause functional issues, performance degradation or end-user confusion
+4. Very important / similar to 3, but with a higher risk of causing issues
+5. Critical / similar to 4, but guaranteed to cause issues such as deployment/processing errors or logical errors
 
 You may add **Remarks** to the rule to provide comments to the community regarding the behaviour and reasoning behind the rule, and also any limitations or exceptions.
 
