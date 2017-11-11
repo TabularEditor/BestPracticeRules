@@ -30,5 +30,5 @@ Write-Host "##[command]git add ."
 git add .
 Write-Host "##[command]git commit -m ""Combined rules"""
 git commit -m "Combined rules"
-Write-Host "##[command]git push origin master"
-git push origin master
+Write-Host "##[command]git push origin HEAD:master"
+git push origin HEAD:master
