@@ -24,3 +24,7 @@ Set-Content ($env:build_stagingDirectory + "\BPARules-standard.json") $standardR
 Set-Content ($env:build_stagingDirectory + "\BPARules-contrib.json") $contribRules
 Write-Host "Finished combining" $standardRules.Length "standard rule(s)"
 Write-Host "Finished combining" $contribRules.Length "contrib rule(s)"
+
+if ($env:system_debug) {
+    dir $env:build_stagingDirectory
+}
