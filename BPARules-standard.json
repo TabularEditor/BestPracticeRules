@@ -1,1 +1,107 @@
-[]
+[
+    {
+        "ID":  "DAX_DIVISION_COLUMNS",
+        "Name":  "Avoid division (use DIVIDE function instead)",
+        "Category":  "DAX Expressions",
+        "Description":  "Calculated Columns, Measures or Calculated Tables should not use the division symbol in their expressions (/). Instead, it is advised to always use the DIVIDE(\u003cnumerator\u003e,\u003cdenominator\u003e) function.",
+        "Severity":  3,
+        "Scope":  "Measure, CalculatedColumn, CalculatedTable",
+        "Expression":  "Expression.Contains(\"/\")",
+        "Remarks":  "This rule may flag false positives, if a slash (/) is used in an object name or in a comment. To fix this, we need access to the tokens from lexing the expression.",
+        "Source":  "standard\\DAX Expressions"
+    },
+    {
+        "ID":  "DAX_TODO",
+        "Name":  "Revisit TODO expressions",
+        "Category":  "DAX Expressions",
+        "Description":  "Objects with an expression containing the word \"TODO\" (typically as a comment), should most likely be revisited.",
+        "Severity":  1,
+        "Scope":  "Measure, Partition, CalculatedColumn, CalculatedTable",
+        "Expression":  "Expression.IndexOf(\"TODO\", StringComparison.OrdinalIgnoreCase) \u003e= 0",
+        "Source":  "standard\\DAX Expressions"
+    },
+    {
+        "ID":  "META_AVOID_FLOAT",
+        "Name":  "Do not use floating point data types",
+        "Category":  "Metadata",
+        "Description":  "Floating point datatypes can cause unexpected results when evaluating values close to 0. Use Decimal instead.",
+        "Severity":  3,
+        "Scope":  "Measure, DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "DataType = \"Double\"",
+        "FixExpression":  "DataType = DataType.Decimal",
+        "Source":  "standard\\Metadata"
+    },
+    {
+        "ID":  "META_SUMMARIZE_NONE",
+        "Name":  "Don\u0027t summarize numeric columns",
+        "Category":  "Metadata",
+        "Description":  "Set the SummarizeBy property of all visible numeric columns to \"None\", to avoid unintentional summarization in client tools. Create measures for columns that are supposed to be summarized.",
+        "Severity":  1,
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "IsHidden = false and SummarizeBy \u003c\u003e \"None\"",
+        "FixExpression":  "SummarizeBy = AggregateFunction.None",
+        "Source":  "standard\\Metadata"
+    },
+    {
+        "ID":  "LAYOUT_ADD_TO_PERSPECTIVES",
+        "Name":  "Add objects to perspectives",
+        "Category":  "Model Layout",
+        "Description":  "Visible tables, columns, measures and hierarchies should be assigned to at least one perspective, if the Tabular Model uses perspectives. Otherwise, the objects will only be visible when connecting directly to the model.",
+        "Severity":  1,
+        "Scope":  "Table, Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "Model.Perspectives.Any() and not IsHidden and not InPerspective.Any(it)",
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "LAYOUT_COLUMNS_HIERARCHIES_DF",
+        "Name":  "Organize columns and hierarchies in display folders",
+        "Category":  "Model Layout",
+        "Description":  "Tables with more than 10 visible columns and/or hierarchies should have them organized in display folders for improved usability.",
+        "Severity":  1,
+        "Scope":  "Table",
+        "Expression":  "not IsHidden and \n   (Columns.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) +\n    Hierarchies.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder))\n) \u003e 10",
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "LAYOUT_HIDE_FK_COLUMNS",
+        "Name":  "Hide foreign key columns",
+        "Category":  "Model Layout",
+        "Description":  "Columns used on the Many side of a relationship should be hidden, as the related (dimension) table is likely the best place to apply a filter context.",
+        "Severity":  1,
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "Model.Relationships.Any(FromColumn = outerIt) and not IsHidden and not Table.IsHidden",
+        "FixExpression":  "IsHidden = true",
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "LAYOUT_LOCALIZE_DF",
+        "Name":  "Translate Display Folders",
+        "Category":  "Model Layout",
+        "Description":  "Display Folder translations should be assigned for objects where the base DisplayFolder property has been assigned. Otherwise, users connecting to the model using a specific Culture will not see the Display Folder structure.",
+        "Severity":  1,
+        "Scope":  "Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "Model.Cultures.Any() and not IsHidden and DisplayFolder \u003c\u003e \"\"",
+        "FixExpression":  "TranslatedDisplayFolder.Reset()",
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "LAYOUT_MEASURES_DF",
+        "Name":  "Organize measures in display folders",
+        "Category":  "Model Layout",
+        "Description":  "Tables with more than 10 visible measures should have them organized in display folders for improved usability",
+        "Severity":  1,
+        "Scope":  "Table",
+        "Expression":  "not IsHidden and Measures.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) \u003e 10",
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "PERF_UNUSED_COLUMNS",
+        "Name":  "Remove unused columns",
+        "Category":  "Performance",
+        "Description":  "Hidden columns, which do not have any dependencies, are not used in any relationships, not used in any hierarchies and not used as the SortByColumn for other columns, will likely not be used by clients and thus take up unnecessary space. Consider removing the columns from the model to save space and improve processing time, if you are certain that no external DAX or MDX queries make use of the columns.",
+        "Severity":  2,
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "IsHidden = true and\nDependants.Count = 0 and\nnot UsedInRelationships.Any() and\nnot UsedInHierarchies.Any() and\nnot UsedInSortBy.Any()",
+        "Source":  "standard\\Performance"
+    }
+]
