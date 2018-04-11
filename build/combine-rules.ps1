@@ -26,6 +26,10 @@ Write-Host "Finished combining" $standardRules.Length "standard rule(s)"
 Write-Host "Finished combining" $contribRules.Length "contrib rule(s)"
 
 cd $env:Build_SourcesDirectory
+Write-Host '##[command]git config --global user.email "$env:user_email"'
+git config --global user.email "$env:user_email"
+Write-Host '##[command]git config --global user.name "$env:user_name"'
+git config --global user.name "$env:user_name"
 Write-Host "##[command]git add ."
 git add .
 Write-Host "##[command]git commit -m ""Combined rules"""
