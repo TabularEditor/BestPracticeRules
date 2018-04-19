@@ -1,0 +1,11 @@
+{
+  "ID": "DAX_COLUMNS_FULLY_QUALIFIED",
+  "Name": "Column references should be fully qualified",
+  "Category": "DAX Expressions",
+  "Description": "Using fully qualified column references makes it easier to distinguish between column and measure references, and also helps avoid certain errors.",
+  "Severity": 2,
+  "Scope": "Measure, CalculatedColumn, CalculatedTable, KPI",
+  "Expression": "DependsOn.Any(Key.ObjectType = \"Column\" and Value.Any(not FullyQualified))",
+  "FixExpression": null,
+  "CompatibilityLevel": 1200
+}
