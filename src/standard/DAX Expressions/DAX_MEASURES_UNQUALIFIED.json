@@ -1,0 +1,11 @@
+{
+  "ID": "DAX_MEASURES_UNQUALIFIED",
+  "Name": "Measure references should be unqualified",
+  "Category": "DAX Expressions",
+  "Description": "Using unqualified measure references makes it easier to distinguish between column and measure references, and also helps avoid certain errors.",
+  "Severity": 2,
+  "Scope": "Measure, CalculatedColumn, CalculatedTable, KPI",
+  "Expression": "DependsOn.Any(Key.ObjectType = \"Measure\" and Value.Any(FullyQualified))",
+  "FixExpression": null,
+  "CompatibilityLevel": 1200
+}
