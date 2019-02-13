@@ -1,5 +1,17 @@
 [
     {
+        "ID":  "DAX_COLUMNS_FULLY_QUALIFIED",
+        "Name":  "Column references should be fully qualified",
+        "Category":  "DAX Expressions",
+        "Description":  "Using fully qualified column references makes it easier to distinguish between column and measure references, and also helps avoid certain errors.",
+        "Severity":  2,
+        "Scope":  "Measure, CalculatedColumn, CalculatedTable, KPI",
+        "Expression":  "DependsOn.Any(Key.ObjectType = \"Column\" and Value.Any(not FullyQualified))",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\DAX Expressions"
+    },
+    {
         "ID":  "DAX_DIVISION_COLUMNS",
         "Name":  "Avoid division (use DIVIDE function instead)",
         "Category":  "DAX Expressions",
@@ -8,6 +20,18 @@
         "Scope":  "Measure, CalculatedColumn, CalculatedTable",
         "Expression":  "Expression.Contains(\"/\")",
         "Remarks":  "This rule may flag false positives, if a slash (/) is used in an object name or in a comment. To fix this, we need access to the tokens from lexing the expression.",
+        "Source":  "standard\\DAX Expressions"
+    },
+    {
+        "ID":  "DAX_MEASURES_UNQUALIFIED",
+        "Name":  "Measure references should be unqualified",
+        "Category":  "DAX Expressions",
+        "Description":  "Using unqualified measure references makes it easier to distinguish between column and measure references, and also helps avoid certain errors.",
+        "Severity":  2,
+        "Scope":  "Measure, CalculatedColumn, CalculatedTable, KPI",
+        "Expression":  "DependsOn.Any(Key.ObjectType = \"Measure\" and Value.Any(FullyQualified))",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\DAX Expressions"
     },
     {
@@ -21,12 +45,24 @@
         "Source":  "standard\\DAX Expressions"
     },
     {
+        "ID":  "APPLY_FORMAT_STRING_MEASURES",
+        "Name":  "Provide format string for all visible measures",
+        "Category":  "Formatting",
+        "Description":  "Visible measures should have their Format String property assigned",
+        "Severity":  3,
+        "Scope":  "Measure",
+        "Expression":  "not IsHidden \nand string.IsNullOrWhitespace(FormatString)",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Formatting"
+    },
+    {
         "ID":  "META_AVOID_FLOAT",
         "Name":  "Do not use floating point data types",
         "Category":  "Metadata",
-        "Description":  "Floating point datatypes can cause unexpected results when evaluating values close to 0. Use Decimal instead.",
+        "Description":  "Floating point datatypes can cause unexpected results when evaluating values close to 0. Use Currency / Fixed Decimal Number (decimal) instead.",
         "Severity":  3,
-        "Scope":  "Measure, DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
         "Expression":  "DataType = \"Double\"",
         "FixExpression":  "DataType = DataType.Decimal",
         "Source":  "standard\\Metadata"
@@ -38,7 +74,7 @@
         "Description":  "Set the SummarizeBy property of all visible numeric columns to \"None\", to avoid unintentional summarization in client tools. Create measures for columns that are supposed to be summarized.",
         "Severity":  1,
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "IsHidden = false and SummarizeBy \u003c\u003e \"None\"",
+        "Expression":  "IsHidden = false and Table.IsHidden = false and SummarizeBy \u003c\u003e \"None\" and (DataType = \"Double\" or DataType = \"Decimal\" or DataType = \"Int64\")",
         "FixExpression":  "SummarizeBy = AggregateFunction.None",
         "Source":  "standard\\Metadata"
     },
@@ -93,6 +129,66 @@
         "Scope":  "Table",
         "Expression":  "not IsHidden and Measures.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) \u003e 10",
         "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "NO_CAMELCASE_COLUMNS_HIERARCHIES",
+        "Name":  "Avoid CamelCase on visible columns and hierarchies",
+        "Category":  "Naming Conventions",
+        "Description":  "Visible columns and hierarchies should not use CamelCase in their names, unless translations are applied",
+        "Severity":  3,
+        "Scope":  "Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "not (IsHidden or Table.IsHidden) \nand RegEx.IsMatch(Name, \"[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\") \nand not Name.Contains(\" \") \nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming"
+    },
+    {
+        "ID":  "NO_CAMELCASE_MEASURES_TABLES",
+        "Name":  "Avoid CamelCase on visible measures and tables",
+        "Category":  "Naming Conventions",
+        "Description":  "Visible measures and tables should not use CamelCase in their names, unless translations are applied",
+        "Severity":  3,
+        "Scope":  "Measure, Table, CalculatedTable",
+        "Expression":  "not (IsHidden or Table.IsHidden) \nand RegEx.IsMatch(Name, \"[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\") \nand not Name.Contains(\" \") \nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming"
+    },
+    {
+        "ID":  "RELATIONSHIP_COLUMN_NAMES",
+        "Name":  "Names of columns in relationships should be the same",
+        "Category":  "Naming Conventions",
+        "Description":  "When a single relationship exists between two tables, the columns on both sides of the relationship must have the same name. When multiple relationships exist between two tables, the name of the FromColumn must end with the name of the ToColumn (for example OrderDateKey, ShipDateKey, DueDateKey, etc.)",
+        "Severity":  3,
+        "Scope":  "Relationship",
+        "Expression":  "(Model.Relationships.Count(FromTable = OuterIt.FromTable and ToTable = OuterIt.ToTable) = 1 and FromColumn.Name \u003c\u003e ToColumn.Name) or\n(Model.Relationships.Count(FromTable = OuterIt.FromTable and ToTable = OuterIt.ToTable) \u003e 1 and not FromColumn.Name.EndsWith(ToColumn.Name))",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming"
+    },
+    {
+        "ID":  "UPPERCASE_FIRST_LETTER_COLUMNS_HIERARCHIES",
+        "Name":  "Column and hierarchy names must start with uppercase letter",
+        "Category":  "Naming Conventions",
+        "Description":  "Avoid using prefixes and camelCasing. Use \"Sales\" instead of \"dimSales\" or \"mSales\".",
+        "Severity":  3,
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "not (IsHidden or Table.IsHidden) and\nchar.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))\n",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming"
+    },
+    {
+        "ID":  "UPPERCASE_FIRST_LETTER_MEASURES_TABLES",
+        "Name":  "Measure and table names must start with uppercase letter",
+        "Category":  "Naming Conventions",
+        "Description":  "Avoid using prefixes and camelCasing. Use \"Sales\" instead of \"dimSales\" or \"mSales\".",
+        "Severity":  3,
+        "Scope":  "Table, Measure, CalculatedTable",
+        "Expression":  "not IsHidden\nand char.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))\n",
+        "FixExpression":  null,
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming"
     },
     {
         "ID":  "PERF_UNUSED_COLUMNS",
