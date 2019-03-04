@@ -18,8 +18,8 @@
         "Description":  "Calculated Columns, Measures or Calculated Tables should not use the division symbol in their expressions (/). Instead, it is advised to always use the DIVIDE(\u003cnumerator\u003e,\u003cdenominator\u003e) function.",
         "Severity":  3,
         "Scope":  "Measure, CalculatedColumn, CalculatedTable",
-        "Expression":  "Expression.Contains(\"/\")",
-        "Remarks":  "This rule may flag false positives, if a slash (/) is used in an object name or in a comment. To fix this, we need access to the tokens from lexing the expression.",
+        "Expression":  "Tokenize().Any(\n    Type = DIV and\n    Next.Type \u003c\u003e INTEGER_LITERAL and\n    Next.Type \u003c\u003e REAL_LITERAL\n)",
+        "Remarks":  "This rule relies on the Tokenize() method which requires Tabular Editor v. 2.8.1",
         "Source":  "standard\\DAX Expressions"
     },
     {
