@@ -5,7 +5,7 @@
   "Description": "Disable Attribute hierarchies for hidden collumns. This will ensure faster processing.",
   "Severity": 2,
   "Scope": "DataColumn",
-  "Expression": "not IsVisible\nand IsAvailableInMDX\nand not UsedInHierarchies.Any() not UsedInVariations.Any()",
+  "Expression": "not IsVisible\nand IsAvailableInMDX\nand not UsedInHierarchies.Any()\nand not UsedInVariations.Any()",
   "FixExpression": "IsAvailableInMDX = false",
   "CompatibilityLevel": 1200
 }

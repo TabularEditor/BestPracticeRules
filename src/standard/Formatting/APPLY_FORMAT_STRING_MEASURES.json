@@ -1,10 +1,10 @@
 {
   "ID": "APPLY_FORMAT_STRING_MEASURES",
-  "Name": "Provide format string for all visible measures",
+  "Name": "Provide format string for visible numeric measures",
   "Category": "Formatting",
   "Description": "Visible measures should have their Format String property assigned",
   "Severity": 3,
   "Scope": "Measure",
-  "Expression": "IsVisible\nand DataType <> \"String\" \nand string.IsNullOrWhitespace(FormatString)",
+  "Expression": "IsVisible\nand string.IsNullOrWhitespace(FormatString)\nand (DataType = \"Int64\" or DataType = \"DateTime\" or DataType = \"Double\" or DataType = \"Decimal\")",
   "CompatibilityLevel": 1200
 }
