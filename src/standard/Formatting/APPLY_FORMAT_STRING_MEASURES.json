@@ -3,7 +3,7 @@
   "Name": "Provide format string for visible numeric measures",
   "Category": "Formatting",
   "Description": "Visible measures should have their Format String property assigned",
-  "Severity": 3,
+  "Severity": 2,
   "Scope": "Measure",
   "Expression": "IsVisible\nand string.IsNullOrWhitespace(FormatString)\nand (DataType = \"Int64\" or DataType = \"DateTime\" or DataType = \"Double\" or DataType = \"Decimal\")",
   "CompatibilityLevel": 1200
