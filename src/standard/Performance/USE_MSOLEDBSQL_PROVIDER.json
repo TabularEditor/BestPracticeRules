@@ -1,0 +1,10 @@
+{
+  "ID": "USE_MSOLEDBSQL_PROVIDER",
+  "Name": "Use MSOLEDBSQL provider",
+  "Category": "Performance",
+  "Description": "Data source providers SQLOLEDB and SQLNCLI have been deprecated. Use MSOLEDBSQL instead. Set the \"Provider\" property to \"System.Data.OleDb\" and ensure that the connection string specified MSOLEDBSQL as \"Provider\". More information: https://docs.microsoft.com/en-us/sql/connect/oledb/oledb-driver-for-sql-server?view=sql-server-ver15",
+  "Severity": 2,
+  "Scope": "ProviderDataSource",
+  "Expression": "ConnectionString.IndexOf(\"SQLNCLI\", StringComparison.OrdinalIgnoreCase) >= 0 or\nConnectionString.IndexOf(\"SQLOLEDB\", StringComparison.OrdinalIgnoreCase) >= 0",
+  "CompatibilityLevel": 1200
+}
