@@ -6,6 +6,5 @@
   "Severity": 2,
   "Scope": "Measure, CalculatedColumn, CalculatedTable, KPI",
   "Expression": "DependsOn.Any(Key.ObjectType = \"Column\" and Value.Any(not FullyQualified))",
-  "FixExpression": null,
   "CompatibilityLevel": 1200
 }

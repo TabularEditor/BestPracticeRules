@@ -5,5 +5,6 @@
   "Description": "Tables with more than 10 visible columns and/or hierarchies should have them organized in display folders for improved usability.",
   "Severity": 1,
   "Scope": "Table",
-  "Expression": "not IsHidden and \n   (Columns.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) +\n    Hierarchies.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder))\n) > 10"
+  "Expression": "Columns.Count(IsVisible and string.IsNullOrEmpty(DisplayFolder)) +\nHierarchies.Count(IsVisible and string.IsNullOrEmpty(DisplayFolder))\n> 10",
+  "CompatibilityLevel": 1200
 }

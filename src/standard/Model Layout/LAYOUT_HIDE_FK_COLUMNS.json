@@ -5,6 +5,7 @@
   "Description": "Columns used on the Many side of a relationship should be hidden, as the related (dimension) table is likely the best place to apply a filter context.",
   "Severity": 1,
   "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
-  "Expression": "Model.Relationships.Any(FromColumn = outerIt) and not IsHidden and not Table.IsHidden",
-  "FixExpression": "IsHidden = true"
+  "Expression": "IsVisible\nand Model.Relationships.Any(FromColumn = outerIt)",
+  "FixExpression": "IsHidden = true",
+  "CompatibilityLevel": 1200
 }

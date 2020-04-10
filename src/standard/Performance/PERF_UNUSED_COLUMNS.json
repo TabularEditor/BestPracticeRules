@@ -5,7 +5,7 @@
   "Description": "Hidden columns, which do not have any dependencies, are not used in any relationships, not used in any hierarchies and not used as the SortByColumn for other columns, will likely not be used by clients and thus take up unnecessary space. Consider removing the columns from the model to save space and improve processing time, if you are certain that no external DAX or MDX queries make use of the columns.",
   "Severity": 2,
   "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
-  "Expression": "(IsHidden or Table.IsHidden)\n\nand ReferencedBy.Count = 0 \n\nand (not UsedInRelationships.Any())\n\nand (not UsedInSortBy.Any())\n\nand (not UsedInHierarchies.Any())\n\nand (not Table.RowLevelSecurity.Any(\n    it <> null and \n    it.IndexOf(\"[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") >= 0\n))\n\nand (not Model.Roles.Any(RowLevelSecurity.Any(\n    it <> null and \n    (\n        it.IndexOf(current.Table.Name + \"[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") >= 0 or\n        it.IndexOf(\"'\" + current.Table.Name + \"'[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") >= 0\n    )\n)))",
+  "Expression": "not IsVisible\n\nand ReferencedBy.Count = 0 \n\nand (not UsedInRelationships.Any())\n\nand (not UsedInSortBy.Any())\n\nand (not UsedInHierarchies.Any())\n\nand (not UsedInVariations.Any())",
   "FixExpression": "Delete()",
   "CompatibilityLevel": 1200
 }

@@ -1,11 +1,10 @@
 {
-    "ID": "APPLY_FORMAT_STRING_MEASURES",
-    "Name": "Provide format string for all visible measures",
-    "Category": "Formatting",
-    "Description": "Visible measures should have their Format String property assigned",
-    "Severity": 3,
-    "Scope": "Measure",
-    "Expression": "not IsHidden \nand string.IsNullOrWhitespace(FormatString)",
-    "FixExpression": null,
-    "CompatibilityLevel": 1200
+  "ID": "APPLY_FORMAT_STRING_MEASURES",
+  "Name": "Provide format string for all visible measures",
+  "Category": "Formatting",
+  "Description": "Visible measures should have their Format String property assigned",
+  "Severity": 3,
+  "Scope": "Measure",
+  "Expression": "IsVisible\nand string.IsNullOrWhitespace(FormatString)",
+  "CompatibilityLevel": 1200
 }

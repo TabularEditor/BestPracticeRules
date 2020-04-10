@@ -6,5 +6,6 @@
   "Severity": 1,
   "Scope": "Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
   "Expression": "IsVisible\nand not string.IsNullOrEmpty(DisplayFolder)\nand Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedDisplayFolders[it]))",
-  "FixExpression": "TranslatedDisplayFolders.Reset()"
+  "FixExpression": "TranslatedDisplayFolders.Reset()",
+  "CompatibilityLevel": 1200
 }
