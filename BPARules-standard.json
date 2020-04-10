@@ -7,7 +7,6 @@
         "Severity":  2,
         "Scope":  "Measure, CalculatedColumn, CalculatedTable, KPI",
         "Expression":  "DependsOn.Any(Key.ObjectType = \"Column\" and Value.Any(not FullyQualified))",
-        "FixExpression":  null,
         "CompatibilityLevel":  1200,
         "Source":  "standard\\DAX Expressions"
     },
@@ -15,11 +14,11 @@
         "ID":  "DAX_DIVISION_COLUMNS",
         "Name":  "Avoid division (use DIVIDE function instead)",
         "Category":  "DAX Expressions",
-        "Description":  "Calculated Columns, Measures or Calculated Tables should not use the division symbol in their expressions (/). Instead, it is advised to always use the DIVIDE(\u003cnumerator\u003e,\u003cdenominator\u003e) function.",
+        "Description":  "Calculated Columns, Measures or Calculated Tables should not use the division symbol in their expressions (/) unless the denominator is a constant value. Instead, it is advised to always use the DIVIDE(\u003cnumerator\u003e,\u003cdenominator\u003e) function.",
         "Severity":  3,
         "Scope":  "Measure, CalculatedColumn, CalculatedTable",
         "Expression":  "Tokenize().Any(\n    Type = DIV and\n    Next.Type \u003c\u003e INTEGER_LITERAL and\n    Next.Type \u003c\u003e REAL_LITERAL\n)",
-        "Remarks":  "This rule relies on the Tokenize() method which requires Tabular Editor v. 2.8.1",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\DAX Expressions"
     },
     {
@@ -30,7 +29,6 @@
         "Severity":  2,
         "Scope":  "Measure, CalculatedColumn, CalculatedTable, KPI",
         "Expression":  "DependsOn.Any(Key.ObjectType = \"Measure\" and Value.Any(FullyQualified))",
-        "FixExpression":  null,
         "CompatibilityLevel":  1200,
         "Source":  "standard\\DAX Expressions"
     },
@@ -42,7 +40,19 @@
         "Severity":  1,
         "Scope":  "Measure, Partition, CalculatedColumn, CalculatedTable",
         "Expression":  "Expression.IndexOf(\"TODO\", StringComparison.OrdinalIgnoreCase) \u003e= 0",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\DAX Expressions"
+    },
+    {
+        "ID":  "APPLY_FORMAT_STRING_COLUMNS",
+        "Name":  "Provide format string for visible numeric columns",
+        "Category":  "Formatting",
+        "Description":  "Visible numeric columns should have their Format String property assigned",
+        "Severity":  3,
+        "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
+        "Expression":  "IsVisible\nand string.IsNullOrWhitespace(FormatString)\nand (DataType = \"Int64\" or DataType = \"DateTime\" or DataType = \"Double\" or DataType = \"Decimal\")\n",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Formatting"
     },
     {
         "ID":  "APPLY_FORMAT_STRING_MEASURES",
@@ -51,10 +61,21 @@
         "Description":  "Visible measures should have their Format String property assigned",
         "Severity":  3,
         "Scope":  "Measure",
-        "Expression":  "not IsHidden \nand string.IsNullOrWhitespace(FormatString)",
-        "FixExpression":  null,
+        "Expression":  "IsVisible\nand string.IsNullOrWhitespace(FormatString)",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Formatting"
+    },
+    {
+        "ID":  "DISABLE_ATTRIBUTE_HIERACHIES",
+        "Name":  "Disable attribute hierachies to decrease processing",
+        "Category":  "Metadata",
+        "Description":  "Disable Attribute hierarchies for hidden collumns. This will ensure faster processing.",
+        "Severity":  2,
+        "Scope":  "DataColumn",
+        "Expression":  "not IsVisible\nand IsAvailableInMDX\nand not UsedInHierarchies.Any() not UsedInVariations.Any()",
+        "FixExpression":  "IsAvailableInMDX = false",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Metadata"
     },
     {
         "ID":  "META_AVOID_FLOAT",
@@ -65,6 +86,7 @@
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
         "Expression":  "DataType = \"Double\"",
         "FixExpression":  "DataType = DataType.Decimal",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Metadata"
     },
     {
@@ -74,8 +96,9 @@
         "Description":  "Set the SummarizeBy property of all visible numeric columns to \"None\", to avoid unintentional summarization in client tools. Create measures for columns that are supposed to be summarized.",
         "Severity":  1,
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "IsHidden = false and Table.IsHidden = false and SummarizeBy \u003c\u003e \"None\" and (DataType = \"Double\" or DataType = \"Decimal\" or DataType = \"Int64\")",
+        "Expression":  "IsVisible\nand SummarizeBy \u003c\u003e \"None\"\nand (DataType = \"Double\" or DataType = \"Decimal\" or DataType = \"Int64\")",
         "FixExpression":  "SummarizeBy = AggregateFunction.None",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Metadata"
     },
     {
@@ -85,7 +108,8 @@
         "Description":  "Visible tables, columns, measures and hierarchies should be assigned to at least one perspective, if the Tabular Model uses perspectives. Otherwise, the objects will only be visible when connecting directly to the model.",
         "Severity":  1,
         "Scope":  "Table, Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "Model.Perspectives.Any() and not IsHidden and not InPerspective.Any(it)",
+        "Expression":  "IsVisible\nand Model.Perspectives.Any()\nand not InPerspective.Any(it)",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Model Layout"
     },
     {
@@ -95,7 +119,8 @@
         "Description":  "Tables with more than 10 visible columns and/or hierarchies should have them organized in display folders for improved usability.",
         "Severity":  1,
         "Scope":  "Table",
-        "Expression":  "not IsHidden and \n   (Columns.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) +\n    Hierarchies.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder))\n) \u003e 10",
+        "Expression":  "Columns.Count(IsVisible and string.IsNullOrEmpty(DisplayFolder)) +\nHierarchies.Count(IsVisible and string.IsNullOrEmpty(DisplayFolder))\n\u003e 10",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Model Layout"
     },
     {
@@ -105,8 +130,9 @@
         "Description":  "Columns used on the Many side of a relationship should be hidden, as the related (dimension) table is likely the best place to apply a filter context.",
         "Severity":  1,
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "Model.Relationships.Any(FromColumn = outerIt) and not IsHidden and not Table.IsHidden",
+        "Expression":  "IsVisible\nand Model.Relationships.Any(FromColumn = outerIt)",
         "FixExpression":  "IsHidden = true",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Model Layout"
     },
     {
@@ -116,8 +142,9 @@
         "Description":  "Display Folder translations should be assigned for objects where the base DisplayFolder property has been assigned. Otherwise, users connecting to the model using a specific Culture will not see the Display Folder structure.",
         "Severity":  1,
         "Scope":  "Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "Model.Cultures.Any() and not IsHidden and DisplayFolder \u003c\u003e \"\"",
-        "FixExpression":  "TranslatedDisplayFolder.Reset()",
+        "Expression":  "IsVisible\nand not string.IsNullOrEmpty(DisplayFolder)\nand Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedDisplayFolders[it]))",
+        "FixExpression":  "TranslatedDisplayFolders.Reset()",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Model Layout"
     },
     {
@@ -127,7 +154,8 @@
         "Description":  "Tables with more than 10 visible measures should have them organized in display folders for improved usability",
         "Severity":  1,
         "Scope":  "Table",
-        "Expression":  "not IsHidden and Measures.Count(not IsHidden and string.IsNullOrEmpty(DisplayFolder)) \u003e 10",
+        "Expression":  "Measures.Count(IsVisible and string.IsNullOrEmpty(DisplayFolder)) \u003e 10",
+        "CompatibilityLevel":  1200,
         "Source":  "standard\\Model Layout"
     },
     {
@@ -138,9 +166,8 @@
         "Severity":  3,
         "Scope":  "Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
         "Expression":  "IsVisible \nand RegEx.IsMatch(Name, \"[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\") \nand not Name.Contains(\" \") \nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
-        "FixExpression":  null,
         "CompatibilityLevel":  1200,
-        "Source":  "standard\\Naming"
+        "Source":  "standard\\Naming Conventions"
     },
     {
         "ID":  "NO_CAMELCASE_MEASURES_TABLES",
@@ -148,11 +175,10 @@
         "Category":  "Naming Conventions",
         "Description":  "Visible measures and tables should not use CamelCase in their names, unless translations are applied",
         "Severity":  3,
-        "Scope":  "Measure, Table, CalculatedTable",
+        "Scope":  "Table, Measure, CalculatedTable",
         "Expression":  "IsVisible \nand RegEx.IsMatch(Name, \"[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\") \nand not Name.Contains(\" \") \nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
-        "FixExpression":  null,
         "CompatibilityLevel":  1200,
-        "Source":  "standard\\Naming"
+        "Source":  "standard\\Naming Conventions"
     },
     {
         "ID":  "RELATIONSHIP_COLUMN_NAMES",
@@ -162,9 +188,8 @@
         "Severity":  3,
         "Scope":  "Relationship",
         "Expression":  "(Model.Relationships.Count(FromTable = OuterIt.FromTable and ToTable = OuterIt.ToTable) = 1 and FromColumn.Name \u003c\u003e ToColumn.Name) or\n(Model.Relationships.Count(FromTable = OuterIt.FromTable and ToTable = OuterIt.ToTable) \u003e 1 and not FromColumn.Name.EndsWith(ToColumn.Name))",
-        "FixExpression":  null,
         "CompatibilityLevel":  1200,
-        "Source":  "standard\\Naming"
+        "Source":  "standard\\Naming Conventions"
     },
     {
         "ID":  "UPPERCASE_FIRST_LETTER_COLUMNS_HIERARCHIES",
@@ -173,10 +198,9 @@
         "Description":  "Avoid using prefixes and camelCasing. Use \"Sales\" instead of \"dimSales\" or \"mSales\".",
         "Severity":  3,
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "not (IsHidden or Table.IsHidden) and\nchar.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))\n",
-        "FixExpression":  null,
+        "Expression":  "IsVisible\nand char.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
         "CompatibilityLevel":  1200,
-        "Source":  "standard\\Naming"
+        "Source":  "standard\\Naming Conventions"
     },
     {
         "ID":  "UPPERCASE_FIRST_LETTER_MEASURES_TABLES",
@@ -185,10 +209,9 @@
         "Description":  "Avoid using prefixes and camelCasing. Use \"Sales\" instead of \"dimSales\" or \"mSales\".",
         "Severity":  3,
         "Scope":  "Table, Measure, CalculatedTable",
-        "Expression":  "not IsHidden\nand char.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))\n",
-        "FixExpression":  null,
+        "Expression":  "IsVisible\nand char.IsLower(Name[0])\nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))\n",
         "CompatibilityLevel":  1200,
-        "Source":  "standard\\Naming"
+        "Source":  "standard\\Naming Conventions"
     },
     {
         "ID":  "PERF_UNUSED_COLUMNS",
@@ -197,7 +220,7 @@
         "Description":  "Hidden columns, which do not have any dependencies, are not used in any relationships, not used in any hierarchies and not used as the SortByColumn for other columns, will likely not be used by clients and thus take up unnecessary space. Consider removing the columns from the model to save space and improve processing time, if you are certain that no external DAX or MDX queries make use of the columns.",
         "Severity":  2,
         "Scope":  "DataColumn, CalculatedColumn, CalculatedTableColumn",
-        "Expression":  "(IsHidden or Table.IsHidden)\n\nand ReferencedBy.Count = 0 \n\nand (not UsedInRelationships.Any())\n\nand (not UsedInSortBy.Any())\n\nand (not UsedInHierarchies.Any())\n\nand (not Table.RowLevelSecurity.Any(\n    it \u003c\u003e null and \n    it.IndexOf(\"[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") \u003e= 0\n))\n\nand (not Model.Roles.Any(RowLevelSecurity.Any(\n    it \u003c\u003e null and \n    (\n        it.IndexOf(current.Table.Name + \"[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") \u003e= 0 or\n        it.IndexOf(\"\u0027\" + current.Table.Name + \"\u0027[\" + current.Name + \"]\", \"OrdinalIgnoreCase\") \u003e= 0\n    )\n)))",
+        "Expression":  "not IsVisible\n\nand ReferencedBy.Count = 0 \n\nand (not UsedInRelationships.Any())\n\nand (not UsedInSortBy.Any())\n\nand (not UsedInHierarchies.Any())\n\nand (not UsedInVariations.Any())",
         "FixExpression":  "Delete()",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Performance"
@@ -209,7 +232,7 @@
         "Description":  "Hidden measures, that are not referenced by any DAX expression, should be removed.",
         "Severity":  1,
         "Scope":  "Measure",
-        "Expression":  "(Table.IsHidden or IsHidden) and ReferencedBy.Count = 0",
+        "Expression":  "not IsVisible\nand ReferencedBy.Count = 0",
         "FixExpression":  "Delete()",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Performance"

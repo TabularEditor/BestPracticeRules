@@ -6,5 +6,6 @@
   "Severity": 3,
   "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
   "Expression": "DataType = \"Double\"",
-  "FixExpression": "DataType = DataType.Decimal"
+  "FixExpression": "DataType = DataType.Decimal",
+  "CompatibilityLevel": 1200
 }

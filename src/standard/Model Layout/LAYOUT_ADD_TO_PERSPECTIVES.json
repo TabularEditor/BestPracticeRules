@@ -5,5 +5,6 @@
   "Description": "Visible tables, columns, measures and hierarchies should be assigned to at least one perspective, if the Tabular Model uses perspectives. Otherwise, the objects will only be visible when connecting directly to the model.",
   "Severity": 1,
   "Scope": "Table, Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTableColumn",
-  "Expression": "Model.Perspectives.Any() and not IsHidden and not InPerspective.Any(it)"
+  "Expression": "IsVisible\nand Model.Perspectives.Any()\nand not InPerspective.Any(it)",
+  "CompatibilityLevel": 1200
 }

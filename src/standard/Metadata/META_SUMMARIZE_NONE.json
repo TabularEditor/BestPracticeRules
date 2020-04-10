@@ -5,6 +5,7 @@
   "Description": "Set the SummarizeBy property of all visible numeric columns to \"None\", to avoid unintentional summarization in client tools. Create measures for columns that are supposed to be summarized.",
   "Severity": 1,
   "Scope": "DataColumn, CalculatedColumn, CalculatedTableColumn",
-  "Expression": "IsHidden = false and Table.IsHidden = false and SummarizeBy <> \"None\" and (DataType = \"Double\" or DataType = \"Decimal\" or DataType = \"Int64\")",
-  "FixExpression": "SummarizeBy = AggregateFunction.None"
+  "Expression": "IsVisible\nand SummarizeBy <> \"None\"\nand (DataType = \"Double\" or DataType = \"Decimal\" or DataType = \"Int64\")",
+  "FixExpression": "SummarizeBy = AggregateFunction.None",
+  "CompatibilityLevel": 1200
 }

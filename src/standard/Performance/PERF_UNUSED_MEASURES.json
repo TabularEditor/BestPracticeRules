@@ -5,7 +5,7 @@
   "Description": "Hidden measures, that are not referenced by any DAX expression, should be removed.",
   "Severity": 1,
   "Scope": "Measure",
-  "Expression": "(Table.IsHidden or IsHidden) and ReferencedBy.Count = 0",
+  "Expression": "not IsVisible\nand ReferencedBy.Count = 0",
   "FixExpression": "Delete()",
   "CompatibilityLevel": 1200
 }
