@@ -260,6 +260,17 @@
         "Source":  "standard\\Performance"
     },
     {
+        "ID":  "SPECIFY_APPLICATION_NAME_IN_CONNECTION_STRING",
+        "Name":  "Specify Application Name in connection string",
+        "Category":  "Performance",
+        "Description":  "When connecting to a SQL Server data source, specify an Application Name in your connection string to let your DBA know where the connection is coming from. For example, you could specify \"AnalysisServicesTabular \u003cServerName\u003e \u003cModelName\u003e\" replacing \u003cServerName\u003e with the name of your AS instance and \u003cModelName\u003e with the name of your model.",
+        "Severity":  1,
+        "Scope":  "ProviderDataSource",
+        "Expression":  "(ConnectionString.IndexOf(\"SQLNCLI\", StringComparison.OrdinalIgnoreCase) \u003e= 0 or\nConnectionString.IndexOf(\"SQLOLEDB\", StringComparison.OrdinalIgnoreCase) \u003e= 0 or\nConnectionString.IndexOf(\"MSOLEDBSQL\", StringComparison.OrdinalIgnoreCase) \u003e= 0) and ConnectionString.IndexOf(\"Application Name\", StringComparison.OrdinalIgnoreCase) \u003c 0",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Performance"
+    },
+    {
         "ID":  "USE_MSOLEDBSQL_PROVIDER",
         "Name":  "Use MSOLEDBSQL provider",
         "Category":  "Performance",
