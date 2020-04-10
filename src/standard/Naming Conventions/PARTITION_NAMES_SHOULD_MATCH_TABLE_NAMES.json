@@ -1,0 +1,10 @@
+{
+  "ID": "PARTITION_NAMES_SHOULD_MATCH_TABLE_NAMES",
+  "Name": "Partition names should match table names",
+  "Category": "Naming Conventions",
+  "Description": "Tables that only have a single partition should ensure that the partition has the same name as the table. On tables with multiple partitions, each partition name should start with the table name.",
+  "Severity": 1,
+  "Scope": "Partition",
+  "Expression": "(Table.Partitions.Count = 1 and Name <> Table.Name) or \n(Table.Partitions.Count > 1 and not Name.StartsWith(Table.Name))",
+  "CompatibilityLevel": 1200
+}
