@@ -1,0 +1,10 @@
+{
+  "ID": "AVOID_SINGLE_ATTRIBUTE_DIMENSIONS",
+  "Name": "Avoid single-attribute dimensions that are not shared by multiple facts",
+  "Category": "Performance",
+  "Description": "In general, over-normalization should be avoided. If a dimension only holds a single attribute and the dimension is not shared by multiple facts, consider moving the attribute to the fact table.",
+  "Severity": 2,
+  "Scope": "Table",
+  "Expression": "Columns.Count(IsVisible and not UsedInRelationships.Any()) <= 1 and\nModel.Relationships.Count(ToTable = outerIt) = 1",
+  "CompatibilityLevel": 1200
+}
