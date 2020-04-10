@@ -5,6 +5,6 @@
   "Description": "Visible measures should have their Format String property assigned",
   "Severity": 3,
   "Scope": "Measure",
-  "Expression": "IsVisible\nand string.IsNullOrWhitespace(FormatString)",
+  "Expression": "IsVisible\nand DataType <> \"String\" \nand string.IsNullOrWhitespace(FormatString)",
   "CompatibilityLevel": 1200
 }
