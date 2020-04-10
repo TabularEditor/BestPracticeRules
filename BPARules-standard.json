@@ -56,12 +56,12 @@
     },
     {
         "ID":  "APPLY_FORMAT_STRING_MEASURES",
-        "Name":  "Provide format string for all visible measures",
+        "Name":  "Provide format string for visible numeric measures",
         "Category":  "Formatting",
         "Description":  "Visible measures should have their Format String property assigned",
         "Severity":  3,
         "Scope":  "Measure",
-        "Expression":  "IsVisible\nand DataType \u003c\u003e \"String\" \nand string.IsNullOrWhitespace(FormatString)",
+        "Expression":  "IsVisible\nand string.IsNullOrWhitespace(FormatString)\nand (DataType = \"Int64\" or DataType = \"DateTime\" or DataType = \"Double\" or DataType = \"Decimal\")",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Formatting"
     },
@@ -72,7 +72,7 @@
         "Description":  "Disable Attribute hierarchies for hidden collumns. This will ensure faster processing.",
         "Severity":  2,
         "Scope":  "DataColumn",
-        "Expression":  "not IsVisible\nand IsAvailableInMDX\nand not UsedInHierarchies.Any() not UsedInVariations.Any()",
+        "Expression":  "not IsVisible\nand IsAvailableInMDX\nand not UsedInHierarchies.Any()\nand not UsedInVariations.Any()",
         "FixExpression":  "IsAvailableInMDX = false",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Metadata"
@@ -177,6 +177,17 @@
         "Severity":  3,
         "Scope":  "Table, Measure, CalculatedTable",
         "Expression":  "IsVisible \nand RegEx.IsMatch(Name, \"[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*\") \nand not Name.Contains(\" \") \nand (Model.Cultures.Count = 0 or TranslatedNames.Any(it = \"\" or it = outerIt.Name))",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Naming Conventions"
+    },
+    {
+        "ID":  "PARTITION_NAMES_SHOULD_MATCH_TABLE_NAMES",
+        "Name":  "Partition names should match table names",
+        "Category":  "Naming Conventions",
+        "Description":  "Tables that only have a single partition should ensure that the partition has the same name as the table. On tables with multiple partitions, each partition name should start with the table name.",
+        "Severity":  1,
+        "Scope":  "Partition",
+        "Expression":  "(Table.Partitions.Count = 1 and Name \u003c\u003e Table.Name) or \n(Table.Partitions.Count \u003e 1 and not Name.StartsWith(Table.Name))",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Naming Conventions"
     },
