@@ -1,0 +1,10 @@
+{
+  "ID": "SPECIFY_APPLICATION_NAME_IN_CONNECTION_STRING",
+  "Name": "Specify Application Name in connection string",
+  "Category": "Performance",
+  "Description": "When connecting to a SQL Server data source, specify an Application Name in your connection string to let your DBA know where the connection is coming from. For example, you could specify \"AnalysisServicesTabular <ServerName> <ModelName>\" replacing <ServerName> with the name of your AS instance and <ModelName> with the name of your model.",
+  "Severity": 1,
+  "Scope": "ProviderDataSource",
+  "Expression": "(ConnectionString.IndexOf(\"SQLNCLI\", StringComparison.OrdinalIgnoreCase) >= 0 or\nConnectionString.IndexOf(\"SQLOLEDB\", StringComparison.OrdinalIgnoreCase) >= 0 or\nConnectionString.IndexOf(\"MSOLEDBSQL\", StringComparison.OrdinalIgnoreCase) >= 0) and ConnectionString.IndexOf(\"Application Name\", StringComparison.OrdinalIgnoreCase) < 0",
+  "CompatibilityLevel": 1200
+}
