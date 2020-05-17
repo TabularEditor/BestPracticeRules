@@ -1,0 +1,10 @@
+{
+  "ID": "TRANSLATE_OTHER_NAMES",
+  "Name": "Translate Perspectives",
+  "Category": "Model Layout",
+  "Description": "When the model contains one or more cultures, the model object and any perspectives in the model should have a translated name assigned in all cultures.",
+  "Severity": 1,
+  "Scope": "Model, Perspective",
+  "Expression": "Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedNames[it]))",
+  "CompatibilityLevel": 1200
+}

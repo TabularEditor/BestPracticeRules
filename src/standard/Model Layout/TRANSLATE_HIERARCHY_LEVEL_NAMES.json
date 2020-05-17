@@ -1,0 +1,10 @@
+{
+  "ID": "TRANSLATE_HIERARCHY_LEVEL_NAMES",
+  "Name": "Translate Hierarchy Levels",
+  "Category": "Model Layout",
+  "Description": "When the model contains one or more cultures, all levels on visible hirearchies should have their a translation applied to their name in all cultures.",
+  "Severity": 1,
+  "Scope": "Level",
+  "Expression": "Hierarchy.IsVisible and Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedNames[it]))",
+  "CompatibilityLevel": 1200
+}

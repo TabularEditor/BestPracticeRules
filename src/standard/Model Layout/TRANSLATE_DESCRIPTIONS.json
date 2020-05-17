@@ -1,0 +1,10 @@
+{
+  "ID": "TRANSLATE_DESCRIPTIONS",
+  "Name": "Translate Object Descriptions",
+  "Category": "Model Layout",
+  "Description": "When the model contains one or more cultures, all objects that have descriptions applied, should also have translated descriptions applied.",
+  "Severity": 1,
+  "Scope": "Model, Table, Measure, Hierarchy, Level, Perspective, DataColumn, CalculatedColumn, CalculatedTable, CalculatedTableColumn",
+  "Expression": "not string.IsNullOrEmpty(Description) and Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedDescriptions[it]))",
+  "CompatibilityLevel": 1200
+}
