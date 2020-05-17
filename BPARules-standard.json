@@ -159,6 +159,50 @@
         "Source":  "standard\\Model Layout"
     },
     {
+        "ID":  "TRANSLATE_DESCRIPTIONS",
+        "Name":  "Translate Object Descriptions",
+        "Category":  "Model Layout",
+        "Description":  "When the model contains one or more cultures, all objects that have descriptions applied, should also have translated descriptions applied.",
+        "Severity":  1,
+        "Scope":  "Model, Table, Measure, Hierarchy, Level, Perspective, DataColumn, CalculatedColumn, CalculatedTable, CalculatedTableColumn",
+        "Expression":  "not string.IsNullOrEmpty(Description) and Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedDescriptions[it]))",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "TRANSLATE_HIDEABLE_OBJECT_NAMES",
+        "Name":  "Translate Visible Object Names",
+        "Category":  "Model Layout",
+        "Description":  "When the model contains one or more cultures, all visible objects should have a name translation provided in that culture.",
+        "Severity":  1,
+        "Scope":  "Table, Measure, Hierarchy, DataColumn, CalculatedColumn, CalculatedTable, CalculatedTableColumn",
+        "Expression":  "IsVisible and Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedNames[it]))",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "TRANSLATE_HIERARCHY_LEVEL_NAMES",
+        "Name":  "Translate Hierarchy Levels",
+        "Category":  "Model Layout",
+        "Description":  "When the model contains one or more cultures, all levels on visible hirearchies should have their a translation applied to their name in all cultures.",
+        "Severity":  1,
+        "Scope":  "Level",
+        "Expression":  "Hierarchy.IsVisible and Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedNames[it]))",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Model Layout"
+    },
+    {
+        "ID":  "TRANSLATE_OTHER_NAMES",
+        "Name":  "Translate Perspectives",
+        "Category":  "Model Layout",
+        "Description":  "When the model contains one or more cultures, the model object and any perspectives in the model should have a translated name assigned in all cultures.",
+        "Severity":  1,
+        "Scope":  "Model, Perspective",
+        "Expression":  "Model.Cultures.Any(string.IsNullOrEmpty(outerIt.TranslatedNames[it]))",
+        "CompatibilityLevel":  1200,
+        "Source":  "standard\\Model Layout"
+    },
+    {
         "ID":  "NO_CAMELCASE_COLUMNS_HIERARCHIES",
         "Name":  "Avoid CamelCase on visible columns and hierarchies",
         "Category":  "Naming Conventions",
