@@ -231,7 +231,7 @@
         "Description":  "Tables that only have a single partition should ensure that the partition has the same name as the table. On tables with multiple partitions, each partition name should start with the table name.",
         "Severity":  1,
         "Scope":  "Partition",
-        "Expression":  "(Table.Partitions.Count = 1 and Name \u003c\u003e Table.Name) or \n(Table.Partitions.Count \u003e 1 and not Name.StartsWith(Table.Name))",
+        "Expression":  "(Table.Partitions.Count = 1 and Name \u003c\u003e Table.Name and Table.ObjectType \u003c\u003e ObjectType.CalculationGroupTable) or \n(Table.Partitions.Count \u003e 1 and not Name.StartsWith(Table.Name) and Table.ObjectType \u003c\u003e ObjectType.CalculationGroupTable)",
         "CompatibilityLevel":  1200,
         "Source":  "standard\\Naming Conventions"
     },
