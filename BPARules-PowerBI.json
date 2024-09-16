@@ -256,8 +256,8 @@
     "CompatibilityLevel": 1200
   },
   {
-    "ID": "DIABLE_AUTO_DATE/TIME",
-    "Name": "Diable auto date/time",
+    "ID": "DISABLE_AUTO_DATE/TIME",
+    "Name": "Disable auto date/time",
     "Category": "Model Layout",
     "Description": "Provide your own Calendar tables instead of relying on Power BI Desktop's built-in auto date/time feature (go to File > Options and settings > Options > Current File > Data Load and remove the checkmark from \"Auto date/time\").",
     "Severity": 3,
